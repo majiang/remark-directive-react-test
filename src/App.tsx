@@ -3,6 +3,8 @@ import React, { useEffect } from 'react'
 import { useRemark } from 'react-remark'
 import remarkDirective from 'remark-directive'
 
+import Paper from '@material-ui/core/Paper'
+
 import './App.css'
 
 function App()
@@ -13,6 +15,24 @@ function App()
         [
             remarkDirective,
         ],
+        remarkToRehypeOptions:
+        {
+            handlers:
+            {
+                textDirective: directiveHandler,
+                leafDirective: directiveHandler,
+                containerDirective: directiveHandler,
+            }
+        },
+        rehypeReactOptions:
+        {
+            components:
+            {
+                textDirective: Paper,
+                leafDirective: Paper,
+                containerDirective: Paper,
+            }
+        }
     })
     useEffect(() =>
     {
@@ -38,3 +58,11 @@ function App()
 }
 
 export default App
+
+function directiveHandler(h: any, node: any)
+{
+    console.log(node)
+    const ret = h(node, node.type, node.attributes, node.children)
+    console.log(ret)
+    return ret
+}
